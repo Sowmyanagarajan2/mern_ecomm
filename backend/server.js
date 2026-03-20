@@ -11,7 +11,6 @@ dotenv.config();
 
 const app = express();
 
-// middleware
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
@@ -25,13 +24,13 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
 
-// ✅ start server FIRST (important fix)
+// start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log("Server running on port " + PORT);
 });
 
-// ✅ connect DB AFTER (won’t crash server)
+// connect DB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log("MongoDB error:", err.message));
+  .catch(err => console.log("MongoDB error:", err.message));

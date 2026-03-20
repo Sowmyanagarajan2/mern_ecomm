@@ -3,23 +3,26 @@ import Product from "../models/Product.js";
 
 const router = express.Router();
 
-// ✅ GET all products (SAFE VERSION)
+// ✅ GET products
 router.get("/", async (req, res) => {
   try {
-    console.log("Products route hit");
-
-    // Try fetching from DB
     const products = await Product.find();
-
     res.json(products);
   } catch (error) {
-    console.log("Products API error:", error.message);
+    console.log("GET error:", error.message);
+    res.status(500).json({ message: "Error fetching products" });
+  }
+});
 
-    // ✅ fallback data (so your demo still works)
-    res.status(200).json([
-      { _id: 1, name: "Demo Product 1", price: 100 },
-      { _id: 2, name: "Demo Product 2", price: 200 }
-    ]);
+// ✅ ADD product (admin)
+router.post("/", async (req, res) => {
+  try {
+    const newProduct = new Product(req.body);
+    const saved = await newProduct.save();
+    res.status(201).json(saved);
+  } catch (error) {
+    console.log("POST error:", error.message);
+    res.status(500).json({ message: "Error adding product" });
   }
 });
 
