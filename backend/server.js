@@ -24,13 +24,18 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/auth", authRoutes);
 
-// start server
+// ✅ START SERVER FIRST (so no 503)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
 
-// connect DB
+// ✅ CONNECT DB WITH DEBUG
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log("MongoDB error:", err.message));
+  .then(() => {
+    console.log("✅ MongoDB connected successfully");
+  })
+  .catch((err) => {
+    console.log("❌ MongoDB connection error:");
+    console.log(err.message);
+  });
